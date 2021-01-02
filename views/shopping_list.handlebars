@@ -1,0 +1,27 @@
+<div class="container">
+  <h1 class="display-4 text-center py-1">Grocery List</h1>
+
+  <div class="jumbotron p-3 shadow-sm">
+    <form id="create-form" action="/create-item" method="POST">
+      <div class="d-flex align-items-center">
+        <input id="create-field" name="item" autofocus autocomplete="off" class="form-control mr-3" type="text"
+          style="flex: 1;" required>
+        <button class="btn btn-success">Add New Item</button>
+      </div>
+    </form>
+  </div>
+
+  <ul id="item-list" class="list-group pb-5">
+  </ul>
+
+  <p>Recently</p>
+
+  <ul id="checked-list" class="list-group pb-5">
+  </ul>
+
+  <script>
+    console.log('000')
+    let items = {{{ stuff }}}
+  </script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="shopping_list.js"></script>

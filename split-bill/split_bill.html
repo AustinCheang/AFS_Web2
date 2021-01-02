@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <title>Shopping Cart</title>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-sm navbar-light bg-info">
+        
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
+        
+        <div class="collapse navbar-collapse" id="nav">
+
+        <ul class ="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Shopping Cart</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Bills</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Power Usage</a></li>
+        </ul>
+    
+    </div>
+    </nav>
+
+    <div class='table-wrapper' tabindex="0">
+        <table id='bills' class="display" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Feon</th>
+                    <th>Austin</th>
+                    <th>Simon</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" id="record1" name="record1"></td>
+                    <td class="text" id="Date-row1" name="Date-row1"></td>
+                    <td class="text" id="Description-row1" name="Description-row1"></td>
+                    <td class="text" id="Category-row1" name="Category-row1"></td>
+                    <td class="numberic"></td>
+                    <td><input type="checkbox" id="feon-row1" name="feon-row1"></td>
+                    <td><input type="checkbox" id="austin-row1" name="austin-row1"></td>
+                    <td><input type="checkbox" id="simon-row1" name="simon-row1" ></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>

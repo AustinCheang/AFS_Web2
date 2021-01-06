@@ -1,8 +1,10 @@
 
 //New item
+
+
 function itemTemplate(item){
     return `<li class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
-            <span class="item-text checkboxx" ><input type="checkbox" id=${item._id} >${item.name}</span>
+            <span class="item-text checkboxx" ><input type="checkbox"id=${item._id} >${item.name}</span>
             <div>
                 <button data-id="${item._id}" class="edit btn btn-secondary btn-sm mr-1">Edit</button>
                 <button data-id="${item._id}" class="delete btn btn-danger btn-sm">Delete</button>
@@ -21,7 +23,12 @@ let list_item = items.map(function(item){
     return itemTemplate(item)
 }).join('')
 
+let list_item2 = items_2.map(function(checked_item){
+    return itemTemplate(checked_item)
+}).join('')
+
 document.getElementById("item-list").insertAdjacentHTML("beforeend", list_item);
+document.getElementById("checked-list").insertAdjacentHTML("beforeend", list_item2);
 
 // Create feature
 let createField = document.getElementById("create-field")
@@ -78,8 +85,6 @@ document.addEventListener("click", function(e){
     if (e.target.classList.contains("delete")){
         if (confirm("Are you sure to delete?")){
             axios.post('/delete-item', {id: e.target.getAttribute("data-id")}).then(function(){
-                // will act after the post action is done
-        
                 e.target.parentElement.parentElement.remove()
                 
                
@@ -88,9 +93,25 @@ document.addEventListener("click", function(e){
     }
 
 
+    // if (document.getElementById(e.target.getAttribute("id")) && e.target.getAttribute("id") !== "create-form" && e.target.getAttribute("id") !== "create-field" ){
+    //     console.log(e.target.getAttribute("id"))
+    //     axios.post('/delete-item', {id: e.target.getAttribute("id")}).then(function(){
+    //         // will act after the post action is done
+    //         let li= e.target.parentElement.innerText
+    //         let item_name = li
+    //         console.log(item_name)
+      
+    //         document.getElementById("checked-list").insertAdjacentHTML("afterbegin", checkedTemplate(item_name))
+    //     e.target.parentElement.parentElement.remove()
+    //     })
+    // }
+
     if (document.getElementById(e.target.getAttribute("id")) && e.target.getAttribute("id") !== "create-form" && e.target.getAttribute("id") !== "create-field" ){
+        let item_id = e.target.getAttribute("id")
         console.log(e.target.getAttribute("id"))
-        axios.post('/delete-item', {id: e.target.getAttribute("id")}).then(function(){
+        let item_name = document.getElementById(item_id).parentElement.lastChild.textContent
+        console.log(item_name)
+        axios.post('/check-item', {id: e.target.getAttribute("id"), name: item_name }).then(function(){
             // will act after the post action is done
             let li= e.target.parentElement.innerText
             let item_name = li

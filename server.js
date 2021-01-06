@@ -20,18 +20,24 @@ app.use(express.urlencoded({extended: false}))
 
 let db;
 
+
 const PORT = process.env.PORT || 5000;
 
 // Connect to database before the website works
-let connectionstring = 'mongodb+srv://aus123:aus123@cluster0.hflbh.mongodb.net/grocery?retryWrites=true&w=majority'
+let connectionstring_grocery = 'mongodb+srv://aus123:aus123@cluster0.hflbh.mongodb.net/grocery?retryWrites=true&w=majority'
 
 // let client = new mongodb(connectionstring)
 
-mongodb.connect(connectionstring, { useUnifiedTopology: true.valueOf},(err, client) => {
-    console.log(client.db().databaseName)
+mongodb.connect(connectionstring_grocery, { useUnifiedTopology: true.valueOf},(err, client) => {
     db = client.db();
+    // See what are the collections inside the database
+    db.listCollections().toArray(function (err, collectionInfos) {
+      console.log(collectionInfos)
+    })
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 })
+
+
 
 // Set Handlebars
 app.engine('handlebars', exphbs());
@@ -44,10 +50,18 @@ app.get('/', function (req, res) {
 
 // For shopping list
 app.get('/shopping_list', function(req, res){
-    db.collection('items').find({checked: false}).toArray((err, items) =>{
+    db.collection('items').find({checked: false}).toArray((err, items, checked_item_) =>{
         items = JSON.stringify(items)
-        console.log(items);
-    res.render('shopping_list', {stuff: items})
+        console.log(items)
+
+        let checked_item_;
+        let temp = db.collection('checked_item').find({}).toArray((err, checked_item) =>{
+          // console.log("in")
+          checked_item_ = JSON.stringify(checked_item)
+          console.log("testing: " + checked_item )
+        })
+    console.log("checked_item: " + checked_item_)
+    res.render('shopping_list', {stuff: items, checked_stuff: checked_item_})
 })
 })
 
@@ -56,8 +70,7 @@ app.post('/create-item', (req, res) =>{
     db.collection('items').insertOne({name: req.body.name, checked: false}, function(err, info){
         // res.redirect('/shopping_list');
     res.json(info.ops[0])
-    } )
-    
+    } )  
 })
 
 app.post('/update-item', (req, res) =>{
@@ -70,6 +83,16 @@ app.post('/delete-item', (req, res)=>{
     db.collection('items').findOneAndUpdate({_id: new mongodb.ObjectId(req.body.id)}, {$set: {checked: true}},function(){
         res.send("Success")
     })
+})
+
+app.post('/check-item', (req, res) =>{
+  db.collection('items').findOneAndUpdate({_id: new mongodb.ObjectId(req.body.id)},{$set: {checked: true}}, () =>{
+    db.collection('checked_item').insertOne({name: req.body.name}), () =>{
+      
+    }
+    res.send("Success")
+  })
+  
 })
 
 // Create split_bill route

@@ -2,6 +2,7 @@ const express = require('express')
 const request = require('request')
 const mongodb = require('mongodb')
 const exphbs = require('express-handlebars')
+const sanitizeHTML = require('sanitize-html')
 var fs = require('fs');
 const path = './token.json';
 
@@ -21,7 +22,7 @@ app.use(express.urlencoded({extended: false}))
 let db;
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
 // Connect to database before the website works
 let connectionstring_grocery = 'mongodb+srv://aus123:aus123@cluster0.hflbh.mongodb.net/grocery?retryWrites=true&w=majority'
@@ -42,6 +43,20 @@ mongodb.connect(connectionstring_grocery, { useUnifiedTopology: true.valueOf},(e
 // Set Handlebars
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
+
+
+function passwordProtected(req, res, next){
+  res.set('WWW-Authenticate', 'Basic realm="Simple App"')
+  console.log(req.headers.authorization)
+  if (req.headers.authorization == "Basic YXVzdGluZmVvbnNpbW9uOg=="){
+    next()
+  }else{
+    res.status(401).send("Authentication required")
+  }
+
+}
+
+app.use(passwordProtected)
 
 // Set Handlebars route
 app.get('/', function (req, res) {
@@ -68,8 +83,9 @@ app.get('/shopping_list', function(req, res){
 })
 
 app.post('/create-item', (req, res) =>{
-    let item = req.body.name.split("#")[0]
-    let person = req.body.name.slice(-1)
+    let safeText =sanitizeHTML(req.body.name, {allowedTags: [], allowedAttributes: {}})
+    let item = safeText.split("#")[0]
+    let person = safeText.slice(-1)
     console.log(person)
     db.collection('items').insertOne({name: item, checked: false, person: person}, function(err, info){
         // res.redirect('/shopping_list');
@@ -78,7 +94,8 @@ app.post('/create-item', (req, res) =>{
 })
 
 app.post('/update-item', (req, res) =>{
-    db.collection('items').findOneAndUpdate({_id: new mongodb.ObjectId(req.body.id)},{$set: {name: req.body.name}}, () =>{
+  let safeText =sanitizeHTML(req.body.name, {allowedTags: [], allowedAttributes: {}})
+    db.collection('items').findOneAndUpdate({_id: new mongodb.ObjectId(req.body.id)},{$set: {name: safeText}}, () =>{
         res.send("Success")
     })
 })
